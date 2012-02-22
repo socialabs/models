@@ -18,5 +18,4 @@ class User extends Model
 t = new Todo(text: 'shit')
 console.log t.text(), t.text('crap'), t.text()
 console.log t.moretext()
-t.set(moretext: 'qwehehe more...')
 console.log t.text()
