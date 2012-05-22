@@ -1,15 +1,16 @@
 ## Data model for client-side JS
-# (c) 2011 Socialabs
+# (c) 2012 Socialabs
 
 Events = Backbone.Events
 
 class EventedBase
     _.extend @::, Events
 
-### Properties
+## Properties
 
 class Field
-    constructor: (@name, {@type, @validate}) ->
+    constructor: (@name, @options) ->
+        {@type, @validate} = @options
 
     getProperty: ->
         self = this
@@ -34,7 +35,7 @@ class Field
             this
 
 
-class Accessor
+class Property
     constructor: (@name, {@get, @set}) ->
 
     getProperty: ->
@@ -70,7 +71,7 @@ class Relation
                 true
 
 
-### Model
+## Model
 
 class Model extends EventedBase
 
@@ -93,11 +94,11 @@ class Model extends EventedBase
         @fields[name] = new Field(name, options)
         @::[name] = @fields[name].getProperty()
 
-    @accessor: (name, options) ->
+    @property: (name, options) ->
         if not @fields
             @fields = {}
 
-        @fields[name] = new Accessor(name, options)
+        @fields[name] = new Property(name, options)
         @::[name] = @fields[name].getProperty()
 
     @_relation: (type, name, model, options) ->
@@ -150,7 +151,7 @@ class Model extends EventedBase
         _.extend({}, @data, @changes)
 
 
-### Model set
+## Model set
 
 class Set extends EventedBase
     constructor: (@model, @models=[]) ->
@@ -167,7 +168,7 @@ class Set extends EventedBase
             _[method].apply(_, [@models].concat(_.toArray(arguments)))
 
 
-### Backends
+## Backends
 
 class EventBackend extends EventedBase
 

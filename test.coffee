@@ -1,7 +1,7 @@
 class Todo extends Model
   @field 'text',
     type: 'string'
-  @accessor 'moretext',
+  @property 'moretext',
     get: -> @text() + ' more...'
     set: (value) -> @text(value.replace(/\ *more...$/, ''))
 
